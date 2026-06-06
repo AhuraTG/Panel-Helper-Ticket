@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Panel Helper",
+  "name": "Panel-Helper-Ticket",
   "version": "1.1",
   "description": "(Ahura) Ticket",
   "permissions": ["activeTab"],
