@@ -319,7 +319,7 @@ function renderEditSubjects() {
         <span>${s}</span>
         <span>
           <span style="color:#4da6ff;cursor:pointer" data-edit="${s}">✏️</span>
-          <span style="color:#ff4d4d;cursor:pointer;margin-right:6px" data-del="${s}">🗑️</span>
+          <span style="color:#ff4d4d;cursor:pointer;margin-right:6px" data-del="${s}">🗑</span>
         </span>
       </div>
       <div style="border-bottom:1px solid #fff"></div>
@@ -357,7 +357,7 @@ function renderEditTopics() {
         <span>${t}</span>
         <span>
           <span style="color:#4da6ff;cursor:pointer" data-edit="${t}">✏️</span>
-          <span style="color:#ff4d4d;cursor:pointer;margin-right:6px" data-del="${t}">🗑️</span>
+          <span style="color:#ff4d4d;cursor:pointer;margin-right:6px" data-del="${t}">🗑</span>
         </span>
       </div>
       <div style="border-bottom:1px solid #fff"></div>
@@ -391,13 +391,39 @@ function renderEditTemplate() {
     <button id="saveEditBtn" style="width:100%;margin-top:6px">ذخیره</button>
     <button id="backEditTemplate" style="width:100%;margin-top:6px;background:#ff4d4d">بازگشت</button>
   `;
+
   tempBody.querySelector("#saveEditBtn").onclick = () => {
-    const newTopic = editTopicInput.value.trim();
-    data[editSubject][newTopic] = editTemplateInput.value;
-    delete data[editSubject][editTopic];
+    const topicInput = tempBody.querySelector("#editTopicInput");
+    const templateInput = tempBody.querySelector("#editTemplateInput");
+
+    if (!topicInput || !templateInput) {
+      alert("خطا در دریافت اطلاعات");
+      return;
+    }
+
+    const newTopic = topicInput.value.trim();
+
+    if (!newTopic) {
+      alert("موضوع نمی تواند خالی باشد");
+      return;
+    }
+
+    const newTemplate = templateInput.value;
+
+    // فقط متن تغییر کرده
+    if (newTopic === editTopic) {
+      data[editSubject][editTopic] = newTemplate;
+    } else {
+      // نام موضوع تغییر کرده
+      data[editSubject][newTopic] = newTemplate;
+      delete data[editSubject][editTopic];
+      editTopic = newTopic;
+    }
+
     saveData();
     renderEditTopics();
   };
+
   tempBody.querySelector("#backEditTemplate").onclick = renderEditTopics;
 }
 
